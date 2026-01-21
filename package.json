@@ -1,7 +1,7 @@
 {
     "name": "ai.onnxruntime",
     "version": "1.0.1",
-    "displayName": "onnxruntime-unity",
+    "displayName": "Onnxruntime Unity",
     "description": "onnxruntime for unity",
     "author": {
         "name": "onnxruntime",
