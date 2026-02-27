@@ -8,8 +8,8 @@ using static Microsoft.ML.OnnxRuntime.NativeMethods;
 
 namespace Microsoft.ML.OnnxRuntime
 {
-    [StructLayout(LayoutKind.Sequential)] 
-    public struct OrtApiBase 
+    [StructLayout(LayoutKind.Sequential)]
+    public struct OrtApiBase
     {
         public IntPtr GetApi;
         public IntPtr GetVersionString;
@@ -18,8 +18,8 @@ namespace Microsoft.ML.OnnxRuntime
     // NOTE: The order of the APIs in this struct should match exactly that in
     // OrtApi ort_api_1_to_<latest_version> (onnxruntime/core/session/onnxruntime_c_api.cc)
     // If syncing your new C API, any other C APIs before yours also need to be synced here if haven't
-    [StructLayout(LayoutKind.Sequential)] 
-    public struct OrtApi 
+    [StructLayout(LayoutKind.Sequential)]
+    public struct OrtApi
     {
         public IntPtr CreateStatus;
         public IntPtr GetErrorCode;
@@ -451,9 +451,9 @@ namespace Microsoft.ML.OnnxRuntime
         static OrtApi api_;
 
         static internal CompileApi.NativeMethods CompileApi;
-         
+
         [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-        public delegate ref OrtApi DOrtGetApi(UInt32 version); 
+        public delegate ref OrtApi DOrtGetApi(UInt32 version);
 
         [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         public delegate IntPtr DOrtGetVersionString();
@@ -461,15 +461,15 @@ namespace Microsoft.ML.OnnxRuntime
         public static DOrtGetVersionString OrtGetVersionString;
 
         static NativeMethods()
-        { 
+        {
             DOrtGetApi OrtGetApi = (DOrtGetApi)Marshal.GetDelegateForFunctionPointer(OrtGetApiBase().GetApi, typeof(DOrtGetApi));
-  
+
             const uint ORT_API_VERSION = 14;
- 
+
             // TODO: Make this save the pointer, and not copy the whole structure across
             api_ = (OrtApi)OrtGetApi(ORT_API_VERSION);
             OrtGetVersionString = (DOrtGetVersionString)Marshal.GetDelegateForFunctionPointer(OrtGetApiBase().GetVersionString, typeof(DOrtGetVersionString));
- 
+
             OrtCreateStatus = (DOrtCreateStatus)Marshal.GetDelegateForFunctionPointer(
                 api_.CreateStatus, typeof(DOrtCreateStatus));
 
@@ -843,10 +843,10 @@ namespace Microsoft.ML.OnnxRuntime
 
         internal class NativeLib
         {
-#if __ANDROID__
+#if UNITY_ANDROID && !UNITY_EDITOR
             // Define the library name required for Android
             internal const string DllName = "libonnxruntime.so";
-#elif __IOS__
+#elif UNITY_IOS && !UNITY_EDITOR
             // Define the library name required for iOS
             internal const string DllName = "__Internal";
 #else
@@ -855,10 +855,10 @@ namespace Microsoft.ML.OnnxRuntime
             // For .NET Core 3.0+, case-sensitivity on Windows is handled by DllImportResolver.
             internal const string DllName = "onnxruntime";
 #endif
-        } 
+        }
 
-        [DllImport(NativeLib.DllName, CharSet = CharSet.Ansi)] 
-        public static extern ref OrtApiBase OrtGetApiBase(); 
+        [DllImport(NativeLib.DllName, CharSet = CharSet.Ansi)]
+        public static extern ref OrtApiBase OrtGetApiBase();
 
         #region Runtime / Environment API
 
@@ -1451,7 +1451,7 @@ namespace Microsoft.ML.OnnxRuntime
         [DllImport(NativeLib.DllName, CharSet = CharSet.Ansi)]
         public static extern IntPtr /*(OrtStatus*)*/ OrtSessionOptionsAppendExecutionProvider_CPU(IntPtr /*(OrtSessionOptions*) */ options, int use_arena);
 
-#if __ANDROID__
+#if UNITY_ANDROID && !UNITY_EDITOR
         [DllImport(NativeLib.DllName, CharSet = CharSet.Ansi)]
         public static extern IntPtr /*(OrtStatus*)*/ OrtSessionOptionsAppendExecutionProvider_Nnapi(IntPtr /*(OrtSessionOptions*)*/ options, uint nnapi_flags);
 #endif
@@ -2525,9 +2525,9 @@ namespace Microsoft.ML.OnnxRuntime
         #endregion
 
         #region Compile API
-         
+
         [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-        public delegate ref CompileApi.OrtCompileApi DOrtGetCompileApi(); 
+        public delegate ref CompileApi.OrtCompileApi DOrtGetCompileApi();
 
         public static DOrtGetCompileApi OrtGetCompileApi;
 
@@ -2919,9 +2919,9 @@ namespace Microsoft.ML.OnnxRuntime
     // adjust the library name based on platform.
     internal static class OrtExtensionsNativeMethods
     {
-#if __ANDROID__
+#if UNITY_ANDROID && !UNITY_EDITOR
         internal const string ExtensionsDllName = "libortextensions.so";
-#elif __IOS__
+#elif UNITY_IOS && !UNITY_EDITOR
         internal const string ExtensionsDllName = "__Internal";
 #else
         // For desktop platforms, use the simple name to allow .NET's

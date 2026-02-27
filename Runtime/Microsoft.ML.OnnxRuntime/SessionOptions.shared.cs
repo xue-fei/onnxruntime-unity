@@ -359,7 +359,7 @@ namespace Microsoft.ML.OnnxRuntime
         /// <param name="nnapiFlags">NNAPI specific flag mask</param>
         public void AppendExecutionProvider_Nnapi(NnapiFlags nnapiFlags = NnapiFlags.NNAPI_FLAG_USE_NONE)
         {
-#if __ANDROID__
+#if UNITY_ANDROID && !UNITY_EDITOR
             NativeApiStatus.VerifySuccess(
                 NativeMethods.OrtSessionOptionsAppendExecutionProvider_Nnapi(handle, (uint)nnapiFlags));
 #else
@@ -373,7 +373,7 @@ namespace Microsoft.ML.OnnxRuntime
         /// <param name="coremlFlags">CoreML specific flags</param>
         public void AppendExecutionProvider_CoreML(CoreMLFlags coremlFlags = CoreMLFlags.COREML_FLAG_USE_NONE)
         {
-#if __IOS__
+#if UNITY_IOS && !UNITY_EDITOR
             NativeApiStatus.VerifySuccess(
                 NativeMethods.OrtSessionOptionsAppendExecutionProvider_CoreML(handle, (uint)coremlFlags));
 #else
