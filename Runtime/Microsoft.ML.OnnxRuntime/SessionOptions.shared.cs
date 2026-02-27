@@ -223,7 +223,7 @@ namespace Microsoft.ML.OnnxRuntime
         /// <param name="useArena">1 - use allocation arena, 0 - otherwise</param>
         public void AppendExecutionProvider_Dnnl(int useArena = 1)
         {
-#if __MOBILE__
+#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
             throw new NotSupportedException("The DNNL Execution Provider is not supported in this build");
 #else
             NativeApiStatus.VerifySuccess(NativeMethods.OrtSessionOptionsAppendExecutionProvider_Dnnl(handle, useArena));
@@ -236,7 +236,7 @@ namespace Microsoft.ML.OnnxRuntime
         /// <param name="deviceId">integer device ID</param>
         public void AppendExecutionProvider_CUDA(int deviceId = 0)
         {
-#if __MOBILE__
+#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
             throw new NotSupportedException("The CUDA Execution Provider is not supported in this build");
 #else
             NativeApiStatus.VerifySuccess(NativeMethods.OrtSessionOptionsAppendExecutionProvider_CUDA(handle, deviceId));
@@ -250,7 +250,7 @@ namespace Microsoft.ML.OnnxRuntime
         /// <param name="cudaProviderOptions">CUDA EP provider options</param>
         public void AppendExecutionProvider_CUDA(OrtCUDAProviderOptions cudaProviderOptions)
         {
-#if __MOBILE__
+#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
             throw new NotSupportedException("The CUDA Execution Provider is not supported in this build");
 #else
             NativeApiStatus.VerifySuccess(NativeMethods.SessionOptionsAppendExecutionProvider_CUDA_V2(handle, cudaProviderOptions.Handle));
@@ -263,7 +263,7 @@ namespace Microsoft.ML.OnnxRuntime
         /// <param name="deviceId">device identification</param>
         public void AppendExecutionProvider_DML(int deviceId = 0)
         {
-#if __MOBILE__
+#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
             throw new NotSupportedException("The DML Execution Provider is not supported in this build");
 #else
             NativeApiStatus.VerifySuccess(NativeMethods.OrtSessionOptionsAppendExecutionProvider_DML(handle, deviceId));
@@ -277,7 +277,7 @@ namespace Microsoft.ML.OnnxRuntime
         /// <param name="deviceId">device identification, default empty string</param>
         public void AppendExecutionProvider_OpenVINO(string deviceId = "")
         {
-#if __MOBILE__
+#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
             throw new NotSupportedException("The OpenVINO Execution Provider is not supported in this build");
 #else
             var utf8 = NativeOnnxValueHelper.StringToZeroTerminatedUtf8(deviceId);
@@ -291,7 +291,7 @@ namespace Microsoft.ML.OnnxRuntime
         /// <param name="deviceId">device identification</param>
         public void AppendExecutionProvider_Tensorrt(int deviceId = 0)
         {
-#if __MOBILE__
+#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
             throw new NotSupportedException("The TensorRT Execution Provider is not supported in this build");
 #else
             NativeApiStatus.VerifySuccess(NativeMethods.OrtSessionOptionsAppendExecutionProvider_Tensorrt(handle, deviceId));
@@ -305,7 +305,7 @@ namespace Microsoft.ML.OnnxRuntime
         /// <param name="trtProviderOptions">TensorRT EP provider options</param>
         public void AppendExecutionProvider_Tensorrt(OrtTensorRTProviderOptions trtProviderOptions)
         {
-#if __MOBILE__
+#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
             throw new NotSupportedException("The TensorRT Execution Provider is not supported in this build");
 #else
             NativeApiStatus.VerifySuccess(NativeMethods.SessionOptionsAppendExecutionProvider_TensorRT_V2(handle, trtProviderOptions.Handle));
@@ -318,7 +318,7 @@ namespace Microsoft.ML.OnnxRuntime
         /// <param name="deviceId">Device Id</param>
         public void AppendExecutionProvider_ROCm(int deviceId = 0)
         {
-#if __MOBILE__
+#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
             throw new NotSupportedException("The ROCM Execution Provider is not supported in this build");
 #else
             NativeApiStatus.VerifySuccess(
@@ -333,7 +333,7 @@ namespace Microsoft.ML.OnnxRuntime
         /// <param name="rocmProviderOptions">ROCm EP provider options</param>
         public void AppendExecutionProvider_ROCm(OrtROCMProviderOptions rocmProviderOptions)
         {
-#if __MOBILE__
+#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
             throw new NotSupportedException("The ROCm Execution Provider is not supported in this build");
 #else
             NativeApiStatus.VerifySuccess(NativeMethods.SessionOptionsAppendExecutionProvider_ROCM(handle, rocmProviderOptions.Handle));
@@ -346,7 +346,7 @@ namespace Microsoft.ML.OnnxRuntime
         /// <param name="deviceId">device identification</param>
         public void AppendExecutionProvider_MIGraphX(int deviceId = 0)
         {
-#if __MOBILE__
+#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
             throw new NotSupportedException($"The MIGraphX Execution Provider is not supported in this build");
 #else
             NativeApiStatus.VerifySuccess(NativeMethods.OrtSessionOptionsAppendExecutionProvider_MIGraphX(handle, deviceId));
@@ -1051,7 +1051,7 @@ namespace Microsoft.ML.OnnxRuntime
 
         #region Private Methods
 
-#if !__MOBILE__
+#if !(UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
         // Declared, but called only if OS = Windows.
         [DllImport("kernel32.dll")]
         private static extern IntPtr LoadLibrary(string dllToLoad);

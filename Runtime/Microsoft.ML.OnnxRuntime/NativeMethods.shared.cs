@@ -1456,13 +1456,13 @@ namespace Microsoft.ML.OnnxRuntime
         public static extern IntPtr /*(OrtStatus*)*/ OrtSessionOptionsAppendExecutionProvider_Nnapi(IntPtr /*(OrtSessionOptions*)*/ options, uint nnapi_flags);
 #endif
 
-#if __ENABLE_COREML__
-        // CoreML is available on iOS and macOS so we can't exclude based on __MOBILE__ && __IOS__
+#if UNITY_IPHONE || UNITY_STANDALONE_OSX
+        // CoreML is available on iOS and macOS so we can't exclude based on (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR && __IOS__
         [DllImport(NativeLib.DllName, CharSet = CharSet.Ansi)]
         public static extern IntPtr /*(OrtStatus*)*/ OrtSessionOptionsAppendExecutionProvider_CoreML(IntPtr /*(OrtSessionOptions*)*/ options, uint coreml_flags);
 #endif
 
-#if !__MOBILE__
+#if UNITY_STANDALONE || UNITY_EDITOR    
         // on non-mobile platforms any of these EPs are possible
         [DllImport(NativeLib.DllName, CharSet = CharSet.Ansi)]
         public static extern IntPtr /*(OrtStatus*)*/ OrtSessionOptionsAppendExecutionProvider_Dnnl(IntPtr /*(OrtSessionOptions*) */ options, int use_arena);

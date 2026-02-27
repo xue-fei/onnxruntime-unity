@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.ML.OnnxRuntime
 {
-#if __ENABLE_TRAINING_APIS__
+ 
     /// <summary>
     ///  Holds the state of the training session.
     /// This class holds the entire training session state that includes model parameters, their gradients,
@@ -251,6 +251,5 @@ namespace Microsoft.ML.OnnxRuntime
         }
 
 #endregion
-    }
-#endif
+    } 
 }

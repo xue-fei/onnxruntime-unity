@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.ML.OnnxRuntime
 {
-#if __ENABLE_TRAINING_APIS__
         // NOTE: The order of the APIs in this struct should match exactly that in
         // OrtTrainingApi  (onnxruntime_training_c_api.cc)
         [StructLayout(LayoutKind.Sequential)]
@@ -52,14 +51,9 @@ namespace Microsoft.ML.OnnxRuntime
             static OrtApi api_;
             static OrtTrainingApi trainingApi_;
             static IntPtr trainingApiPtr;
-
-#if NETSTANDARD2_0
+         
             [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-            public delegate IntPtr DOrtGetApi(UInt32 version);
-#else
-            [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-            public delegate ref OrtApi DOrtGetApi(UInt32 version);
-#endif
+            public delegate ref OrtApi DOrtGetApi(UInt32 version); 
 
 
             [UnmanagedFunctionPointer(CallingConvention.Winapi)]
@@ -67,24 +61,14 @@ namespace Microsoft.ML.OnnxRuntime
             public static DOrtGetTrainingApi OrtGetTrainingApi;
 
         static NativeTrainingMethods()
-            {
-#if NETSTANDARD2_0
-                IntPtr ortApiBasePtr = NativeMethods.OrtGetApiBase();
-                OrtApiBase ortApiBase = (OrtApiBase)Marshal.PtrToStructure(ortApiBasePtr, typeof(OrtApiBase));
-                DOrtGetApi OrtGetApi = (DOrtGetApi)Marshal.GetDelegateForFunctionPointer(ortApiBase.GetApi, typeof(DOrtGetApi));
-#else
+            { 
                 DOrtGetApi OrtGetApi = (DOrtGetApi)Marshal.GetDelegateForFunctionPointer(NativeMethods.OrtGetApiBase().GetApi, typeof(DOrtGetApi));
-#endif
-
+ 
                 const uint ORT_API_VERSION = 23;
-#if NETSTANDARD2_0
-                IntPtr ortApiPtr = OrtGetApi(ORT_API_VERSION);
-                api_ = (OrtApi)Marshal.PtrToStructure(ortApiPtr, typeof(OrtApi));
-#else
+ 
                 // TODO: Make this save the pointer, and not copy the whole structure across
                 api_ = (OrtApi)OrtGetApi(ORT_API_VERSION);
-#endif
-
+  
                 OrtGetTrainingApi = (DOrtGetTrainingApi)Marshal.GetDelegateForFunctionPointer(api_.GetTrainingApi, typeof(DOrtGetTrainingApi));
                 trainingApiPtr = OrtGetTrainingApi(ORT_API_VERSION);
                 if (trainingApiPtr != IntPtr.Zero)
@@ -422,5 +406,5 @@ namespace Microsoft.ML.OnnxRuntime
                 return true;
             }
         } //class NativeTrainingMethods
-#endif
+ 
 } //namespace
