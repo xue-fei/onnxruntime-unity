@@ -1,0 +1,9 @@
+
+Temp
+Library
+Logs
+.vsconfig
+*.csproj
+*.sln
+*.dwlt
+LICENSE.meta
