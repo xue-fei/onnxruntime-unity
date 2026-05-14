@@ -1,5 +1,5 @@
 {
-  "name": "onnxruntime-unity",
+  "name": "onnxruntime",
   "version": "1.0.1",
   "displayName": "onnxruntime",
   "description": "onnxruntime for unity",
