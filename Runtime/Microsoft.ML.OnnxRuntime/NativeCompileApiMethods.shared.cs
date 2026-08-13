@@ -25,6 +25,7 @@ namespace Microsoft.ML.OnnxRuntime.CompileApi
         public IntPtr ModelCompilationOptions_SetGraphOptimizationLevel;
         public IntPtr ModelCompilationOptions_SetOutputModelWriteFunc;
         public IntPtr ModelCompilationOptions_SetOutputModelGetInitializerLocationFunc;
+        public IntPtr ModelCompilationOptions_SetInputModel;
     }
 
     internal class NativeMethods
@@ -136,10 +137,16 @@ namespace Microsoft.ML.OnnxRuntime.CompileApi
         public DOrtModelCompilationOptions_SetOutputModelGetInitializerLocationFunc
                         OrtModelCompilationOptions_SetOutputModelGetInitializerLocationFunc;
 
+        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
+        public delegate IntPtr /* OrtStatus* */ DOrtModelCompilationOptions_SetInputModel(
+            IntPtr /* OrtModelCompilationOptions* */ options,
+            IntPtr /* const OrtModel* */ inputModel);
+        public DOrtModelCompilationOptions_SetInputModel OrtModelCompilationOptions_SetInputModel;
+
         internal NativeMethods(OnnxRuntime.NativeMethods.DOrtGetCompileApi getCompileApi)
-        { 
+        {
             _compileApi = (OrtCompileApi)getCompileApi();
-  
+
             OrtReleaseModelCompilationOptions =
                 (DOrtReleaseModelCompilationOptions)Marshal.GetDelegateForFunctionPointer(
                     _compileApi.ReleaseModelCompilationOptions,
@@ -210,6 +217,11 @@ namespace Microsoft.ML.OnnxRuntime.CompileApi
                 GetDelegateForFunctionPointer(
                     _compileApi.ModelCompilationOptions_SetOutputModelGetInitializerLocationFunc,
                     typeof(DOrtModelCompilationOptions_SetOutputModelGetInitializerLocationFunc));
+
+            OrtModelCompilationOptions_SetInputModel =
+                (DOrtModelCompilationOptions_SetInputModel)Marshal.GetDelegateForFunctionPointer(
+                    _compileApi.ModelCompilationOptions_SetInputModel,
+                    typeof(DOrtModelCompilationOptions_SetInputModel));
 
         }
     }

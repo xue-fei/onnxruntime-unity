@@ -51,9 +51,9 @@ namespace Microsoft.ML.OnnxRuntime
             static OrtApi api_;
             static OrtTrainingApi trainingApi_;
             static IntPtr trainingApiPtr;
-         
+
             [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-            public delegate ref OrtApi DOrtGetApi(UInt32 version); 
+            public delegate ref OrtApi DOrtGetApi(UInt32 version);
 
 
             [UnmanagedFunctionPointer(CallingConvention.Winapi)]
@@ -61,14 +61,14 @@ namespace Microsoft.ML.OnnxRuntime
             public static DOrtGetTrainingApi OrtGetTrainingApi;
 
         static NativeTrainingMethods()
-            { 
+            {
                 DOrtGetApi OrtGetApi = (DOrtGetApi)Marshal.GetDelegateForFunctionPointer(NativeMethods.OrtGetApiBase().GetApi, typeof(DOrtGetApi));
- 
-                const uint ORT_API_VERSION = 23;
- 
+
+                const uint ORT_API_VERSION = 26;
+
                 // TODO: Make this save the pointer, and not copy the whole structure across
                 api_ = (OrtApi)OrtGetApi(ORT_API_VERSION);
-  
+
                 OrtGetTrainingApi = (DOrtGetTrainingApi)Marshal.GetDelegateForFunctionPointer(api_.GetTrainingApi, typeof(DOrtGetTrainingApi));
                 trainingApiPtr = OrtGetTrainingApi(ORT_API_VERSION);
                 if (trainingApiPtr != IntPtr.Zero)
@@ -406,5 +406,4 @@ namespace Microsoft.ML.OnnxRuntime
                 return true;
             }
         } //class NativeTrainingMethods
- 
 } //namespace

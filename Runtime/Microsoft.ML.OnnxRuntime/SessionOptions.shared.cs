@@ -359,7 +359,7 @@ namespace Microsoft.ML.OnnxRuntime
         /// <param name="nnapiFlags">NNAPI specific flag mask</param>
         public void AppendExecutionProvider_Nnapi(NnapiFlags nnapiFlags = NnapiFlags.NNAPI_FLAG_USE_NONE)
         {
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
             NativeApiStatus.VerifySuccess(
                 NativeMethods.OrtSessionOptionsAppendExecutionProvider_Nnapi(handle, (uint)nnapiFlags));
 #else
@@ -377,7 +377,7 @@ namespace Microsoft.ML.OnnxRuntime
             NativeApiStatus.VerifySuccess(
                 NativeMethods.OrtSessionOptionsAppendExecutionProvider_CoreML(handle, (uint)coremlFlags));
 #else
-#if __ENABLE_COREML__
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
             // only attempt if this is OSX
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
@@ -557,8 +557,8 @@ namespace Microsoft.ML.OnnxRuntime
         public void RegisterOrtExtensions()
         {
             try
-            { 
-                var ortApiBase = NativeMethods.OrtGetApiBase(); 
+            {
+                var ortApiBase = NativeMethods.OrtGetApiBase();
                 NativeApiStatus.VerifySuccess(
                     OrtExtensionsNativeMethods.RegisterCustomOps(this.handle, ref ortApiBase)
                 );

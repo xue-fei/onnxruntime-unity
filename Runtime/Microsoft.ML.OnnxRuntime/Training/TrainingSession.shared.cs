@@ -9,7 +9,6 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.ML.OnnxRuntime
 {
- 
     /// <summary>
     /// This class defines utility methods for training.
     /// </summary>
@@ -899,5 +898,5 @@ namespace Microsoft.ML.OnnxRuntime
         }
 
         #endregion
-    } 
+    }
 }
