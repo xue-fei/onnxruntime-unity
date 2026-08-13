@@ -6,4 +6,4 @@ onnxruntime
   
 https://github.com/microsoft/onnxruntime.git  
   
-Microsoft.ML.OnnxRuntime v1.24.2   
+Microsoft.ML.OnnxRuntime v1.29.0   
